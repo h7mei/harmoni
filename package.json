@@ -1,0 +1,24 @@
+{
+  "name": "synchr",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Linear-inspired real-time collaboration platform",
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel run dev",
+    "dev:web": "pnpm --filter @synchr/web dev",
+    "dev:backend": "pnpm --filter @synchr/backend dev",
+    "dev:desktop": "pnpm --filter @synchr/desktop dev",
+    "lint": "pnpm -r run lint",
+    "test": "pnpm -r run test",
+    "db:migrate": "pnpm --filter @synchr/backend db:migrate",
+    "db:generate": "pnpm --filter @synchr/backend db:generate"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@9.14.2",
+  "engines": {
+    "node": ">=20"
+  }
+}
