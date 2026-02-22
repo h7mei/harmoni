@@ -15,7 +15,7 @@ real-time collaboration platform. Single codebase for web and desktop, with live
 ## Project Structure
 
 ```
-synchr/
+harmoni/
 ├── apps/
 │   ├── backend/    # GraphQL API, WebSocket, PostgreSQL, Redis
 │   ├── web/        # React + MobX + Vite

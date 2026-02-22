@@ -1,5 +1,5 @@
 {
-  "name": "synchr",
+  "name": "harmoni",
   "version": "0.1.0",
   "private": true,
   "description": "Linear-inspired real-time collaboration platform",
@@ -7,13 +7,13 @@
     "prepare": "husky",
     "build": "pnpm -r build",
     "dev": "pnpm -r --parallel run dev",
-    "dev:web": "pnpm --filter @synchr/web dev",
-    "dev:backend": "pnpm --filter @synchr/backend dev",
-    "dev:desktop": "pnpm --filter @synchr/desktop dev",
+    "dev:web": "pnpm --filter @harmoni/web dev",
+    "dev:backend": "pnpm --filter @harmoni/backend dev",
+    "dev:desktop": "pnpm --filter @harmoni/desktop dev",
     "lint": "pnpm -r run lint",
     "test": "pnpm -r run test",
-    "db:migrate": "pnpm --filter @synchr/backend db:migrate",
-    "db:generate": "pnpm --filter @synchr/backend db:generate"
+    "db:migrate": "pnpm --filter @harmoni/backend db:migrate",
+    "db:generate": "pnpm --filter @harmoni/backend db:generate"
   },
   "devDependencies": {
     "husky": "^9.1.7",

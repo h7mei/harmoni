@@ -1,6 +1,6 @@
 import { get, set, del } from "idb-keyval";
 
-const PREFIX = "synchr:";
+const PREFIX = "harmoni:";
 
 export const cache = {
   async get<T>(key: string): Promise<T | undefined> {
