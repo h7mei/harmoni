@@ -15,7 +15,13 @@
     "dev": "tsc --watch",
     "lint": "echo 'lint shared'"
   },
+  "dependencies": {
+    "pino": "^9.5.0",
+    "pino-pretty": "^11.3.0",
+    "zod": "^3.23.8"
+  },
   "devDependencies": {
     "typescript": "^5.6.3"
-  }
+  },
+  "type": "module"
 }

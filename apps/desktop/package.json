@@ -4,9 +4,9 @@
   "private": true,
   "main": "dist/main.js",
   "scripts": {
-    "build": "tsc && vite build",
-    "dev": "concurrently \"pnpm --filter @harmoni/web dev\" \"wait-on http://localhost:3000 && electron .\"",
-    "start": "electron .",
+    "build": "tsc && node node_modules/vite/bin/vite.js build",
+    "dev": "node node_modules/concurrently/dist/bin/concurrently.js \"pnpm --filter @harmoni/web dev\" \"node node_modules/wait-on/bin/wait-on http://localhost:3000 && node node_modules/electron/cli.js . --no-sandbox\"",
+    "start": "electron . --no-sandbox",
     "lint": "echo 'lint desktop'"
   },
   "dependencies": {
@@ -17,6 +17,7 @@
     "@types/node": "^22.10.1",
     "concurrently": "^9.1.0",
     "typescript": "^5.6.3",
-    "vite": "^6.0.1"
+    "vite": "^6.0.1",
+    "@vitejs/plugin-react": "^4.3.4"
   }
 }
