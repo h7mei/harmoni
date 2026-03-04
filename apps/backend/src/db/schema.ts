@@ -5,6 +5,7 @@ import {
   timestamp,
   text,
   pgEnum,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 export const roleEnum = pgEnum("role", ["admin", "member", "viewer"]);
@@ -46,4 +47,15 @@ export const workspaceMembers = pgTable("workspace_members", {
     .references(() => users.id, { onDelete: "cascade" }),
   role: roleEnum("role").notNull().default("member"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const todos = pgTable("todos", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  title: varchar("title", { length: 500 }).notNull(),
+  completed: boolean("completed").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

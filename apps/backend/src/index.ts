@@ -6,6 +6,8 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import depthLimit from "graphql-depth-limit";
 import { typeDefs } from "./graphql/schema.js";
 import { resolvers } from "./graphql/resolvers.js";
@@ -66,6 +68,30 @@ app.use(
 
 app.get("/health", healthHandler(redis));
 
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+const graphqlWsServer = new WebSocketServer({ server: httpServer, path: "/graphql-ws" });
+useServer(
+  {
+    schema,
+    context: (ctx) => {
+      const token =
+        (ctx.connectionParams?.authorization as string)?.replace(/^Bearer\s+/i, "") ??
+        (ctx.connectionParams?.token as string);
+      const payload = token ? verifyAccessToken(token) : null;
+      const user = payload
+        ? { id: payload.sub, email: payload.email, name: payload.name, createdAt: "", updatedAt: "" }
+        : null;
+      return {
+        user,
+        requestId: `sub_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`,
+        logger,
+      };
+    },
+  },
+  graphqlWsServer as any
+);
+
 const wsServer = new WebSocketServer({ server: httpServer, path: "/ws" });
 wsServer.on("connection", (ws: import("ws").WebSocket, req: import("http").IncomingMessage) => {
   const url = new URL(req.url ?? "", `http://${req.headers.host}`);
@@ -89,6 +115,7 @@ const server = httpServer.listen(PORT, () => {
     `Server ready at http://localhost:${PORT}/graphql`
   );
   logger.info(`WebSocket ready at ws://localhost:${PORT}/ws`);
+  logger.info(`GraphQL subscriptions at ws://localhost:${PORT}/graphql-ws`);
   logger.info(`Health at http://localhost:${PORT}/health`);
 });
 

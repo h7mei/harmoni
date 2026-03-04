@@ -1,10 +1,12 @@
 import * as argon2 from "argon2";
-import { eq } from "drizzle-orm";
+import { eq, and, asc } from "drizzle-orm";
 import type { GraphQLContext } from "./context.js";
 import { registerSchema, loginSchema } from "@harmoni/shared";
 import { db } from "../db/index.js";
-import { users, refreshTokens } from "../db/schema.js";
+import { users, refreshTokens, todos } from "../db/schema.js";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../middleware/auth.js";
+import { pubsub, TODOS_UPDATED } from "./pubsub.js";
+import type { PubSubEngine } from "graphql-subscriptions";
 
 const REFRESH_TOKEN_EXPIRY_DAYS = 7;
 
@@ -18,6 +20,22 @@ function userToGql(user: { id: string; email: string; name: string; createdAt: D
   };
 }
 
+function todoToGql(todo: {
+  id: string;
+  title: string;
+  completed: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}) {
+  return {
+    id: todo.id,
+    title: todo.title,
+    completed: todo.completed,
+    createdAt: todo.createdAt.toISOString(),
+    updatedAt: todo.updatedAt.toISOString(),
+  };
+}
+
 export const resolvers = {
   Query: {
     health: () => "ok",
@@ -25,6 +43,24 @@ export const resolvers = {
       if (!ctx.user) return null;
       const [user] = await db.select().from(users).where(eq(users.id, ctx.user.id)).limit(1);
       return user ? userToGql(user) : null;
+    },
+    todos: async (_: unknown, __: unknown, ctx: GraphQLContext) => {
+      if (!ctx.user) return [];
+      const rows = await db
+        .select()
+        .from(todos)
+        .where(eq(todos.userId, ctx.user.id))
+        .orderBy(asc(todos.createdAt));
+      return rows.map(todoToGql);
+    },
+    todo: async (_: unknown, args: { id: string }, ctx: GraphQLContext) => {
+      if (!ctx.user) return null;
+      const [row] = await db
+        .select()
+        .from(todos)
+        .where(and(eq(todos.id, args.id), eq(todos.userId, ctx.user!.id)))
+        .limit(1);
+      return row ? todoToGql(row) : null;
     },
   },
   Mutation: {
@@ -164,6 +200,74 @@ export const resolvers = {
         refreshToken: newRefreshToken,
         expiresIn: 900,
       };
+    },
+    createTodo: async (
+      _: unknown,
+      args: { title: string },
+      ctx: GraphQLContext
+    ) => {
+      if (!ctx.user) throw new Error("Authentication required");
+      const title = args.title.trim();
+      if (!title) throw new Error("Title is required");
+      const [todo] = await db
+        .insert(todos)
+        .values({ userId: ctx.user.id, title })
+        .returning();
+      if (!todo) throw new Error("Failed to create todo");
+      pubsub.publish(`${TODOS_UPDATED}:${ctx.user.id}`, true);
+      return todoToGql(todo);
+    },
+    updateTodo: async (
+      _: unknown,
+      args: { id: string; title?: string; completed?: boolean },
+      ctx: GraphQLContext
+    ) => {
+      if (!ctx.user) throw new Error("Authentication required");
+      const [existing] = await db
+        .select()
+        .from(todos)
+        .where(and(eq(todos.id, args.id), eq(todos.userId, ctx.user.id)))
+        .limit(1);
+      if (!existing) throw new Error("Todo not found");
+      const updates: { title?: string; completed?: boolean; updatedAt: Date } = {
+        updatedAt: new Date(),
+      };
+      if (args.title !== undefined) updates.title = args.title.trim();
+      if (args.completed !== undefined) updates.completed = args.completed;
+      const [updated] = await db
+        .update(todos)
+        .set(updates)
+        .where(eq(todos.id, args.id))
+        .returning();
+      if (!updated) throw new Error("Failed to update todo");
+      pubsub.publish(`${TODOS_UPDATED}:${ctx.user.id}`, true);
+      return todoToGql(updated);
+    },
+    deleteTodo: async (
+      _: unknown,
+      args: { id: string },
+      ctx: GraphQLContext
+    ) => {
+      if (!ctx.user) throw new Error("Authentication required");
+      const [existing] = await db
+        .select()
+        .from(todos)
+        .where(and(eq(todos.id, args.id), eq(todos.userId, ctx.user.id)))
+        .limit(1);
+      if (!existing) return false;
+      await db.delete(todos).where(eq(todos.id, args.id));
+      pubsub.publish(`${TODOS_UPDATED}:${ctx.user.id}`, true);
+      return true;
+    },
+  },
+  Subscription: {
+    todosUpdated: {
+      subscribe: (_: unknown, __: unknown, ctx: GraphQLContext) => {
+        if (!ctx.user) throw new Error("Authentication required");
+        return (pubsub as PubSubEngine).asyncIterableIterator<boolean>([
+          `${TODOS_UPDATED}:${ctx.user.id}`,
+        ]);
+      },
     },
   },
 };
