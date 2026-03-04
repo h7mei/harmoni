@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { ErrorBoundary } from "./components/ErrorBoundary.js";
 import { LoginForm } from "./components/LoginForm.js";
+import { AppSidebar, DashboardContent } from "./components/Dashboard.js";
 import { authStore } from "./stores/AuthStore.js";
 
 const HEALTH = gql`
@@ -23,8 +24,8 @@ const ME = gql`
 `;
 
 const AppInner = observer(function AppInner() {
-  const { data: healthData } = useQuery(HEALTH);
-  const { data: meData } = useQuery(ME, { skip: !authStore.isAuthenticated });
+  useQuery(HEALTH);
+  useQuery(ME, { skip: !authStore.isAuthenticated });
 
   useEffect(() => {
     authStore.hydrate();
@@ -36,19 +37,19 @@ const AppInner = observer(function AppInner() {
 
   if (!authStore.isAuthenticated) {
     return (
-      <div className="app">
-        <h1>Harmoni</h1>
+      <div className="flex min-h-svh flex-col items-center justify-center bg-background p-4">
+        <h1 className="mb-6 text-2xl font-semibold">Harmoni</h1>
         <LoginForm authStore={authStore} />
       </div>
     );
   }
 
   return (
-    <div className="app">
-      <h1>Harmoni</h1>
-      <p>Health: {healthData?.health ?? "loading..."}</p>
-      <p>User: {meData?.me?.name ?? authStore.user?.name ?? "loading..."}</p>
-      <button onClick={() => authStore.clearAuth()}>Sign out</button>
+    <div className="flex min-h-svh">
+      <AppSidebar authStore={authStore} />
+      <main className="flex-1 overflow-hidden">
+        <DashboardContent />
+      </main>
     </div>
   );
 });

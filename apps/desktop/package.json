@@ -5,17 +5,24 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc && node node_modules/vite/bin/vite.js build",
-    "dev": "node node_modules/concurrently/dist/bin/concurrently.js \"pnpm --filter @harmoni/web dev\" \"node node_modules/wait-on/bin/wait-on http://localhost:3000 && node node_modules/electron/cli.js . --no-sandbox\"",
+    "dev": "node node_modules/concurrently/dist/bin/concurrently.js \"pnpm --filter @harmoni/web dev\" \"node node_modules/wait-on/bin/wait-on http://localhost:3000 && npx cross-env NODE_ENV=development electron . --no-sandbox\"",
     "start": "electron . --no-sandbox",
+    "pack": "pnpm build && npx electron-builder --dir",
+    "pack:mac": "pnpm build && npx electron-builder --mac",
+    "pack:win": "pnpm build && npx electron-builder --win",
+    "pack:all": "pnpm build && npx electron-builder --mac --win",
     "lint": "echo 'lint desktop'"
   },
   "dependencies": {
     "electron": "^33.2.0"
   },
   "devDependencies": {
-    "wait-on": "^8.0.1",
+    "@tailwindcss/vite": "^4.2.1",
     "@types/node": "^22.10.1",
     "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "electron-builder": "^25.1.8",
+    "wait-on": "^8.0.1",
     "typescript": "^5.6.3",
     "vite": "^6.0.1",
     "@vitejs/plugin-react": "^4.3.4"

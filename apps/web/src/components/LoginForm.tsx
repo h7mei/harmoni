@@ -2,6 +2,10 @@ import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { observer } from "mobx-react-lite";
 import type { AuthStore } from "../stores/AuthStore.js";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.js";
+import { Button } from "@/components/ui/button.js";
+import { Input } from "@/components/ui/input.js";
+import { cn } from "@/lib/utils.js";
 
 const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
@@ -75,54 +79,93 @@ export const LoginForm = observer(function LoginForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 360, margin: "0 auto", fontFamily: "system-ui" }}>
-      <h2>{mode === "login" ? "Sign in" : "Create account"}</h2>
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
-      <div style={{ marginBottom: 12 }}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ width: "100%", padding: 8 }}
-        />
-      </div>
-      {mode === "register" && (
-        <div style={{ marginBottom: 12 }}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            style={{ width: "100%", padding: 8 }}
-          />
-        </div>
-      )}
-      <div style={{ marginBottom: 12 }}>
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={mode === "register" ? 8 : 1}
-          style={{ width: "100%", padding: 8 }}
-        />
-      </div>
-      <button type="submit" disabled={loading} style={{ padding: 8, marginRight: 8 }}>
-        {loading ? "..." : mode === "login" ? "Sign in" : "Register"}
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          setMode(mode === "login" ? "register" : "login");
-          setError(null);
-        }}
-      >
-        {mode === "login" ? "Create account" : "Sign in instead"}
-      </button>
-    </form>
+    <Card className="w-full max-w-sm border-border bg-card shadow-lg">
+      <CardHeader className="space-y-1 text-center">
+        <CardTitle className="text-2xl font-semibold tracking-tight">
+          {mode === "login" ? "Sign in" : "Create account"}
+        </CardTitle>
+        <CardDescription>
+          {mode === "login"
+            ? "Enter your email and password to sign in."
+            : "Enter your details to create an account."}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive" role="alert">
+              {error}
+            </p>
+          )}
+          <div className="space-y-2">
+            <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Email
+            </label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              className="w-full"
+            />
+          </div>
+          {mode === "register" && (
+            <div className="space-y-2">
+              <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Name
+              </label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                autoComplete="name"
+                className="w-full"
+              />
+            </div>
+          )}
+          <div className="space-y-2">
+            <label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Password
+            </label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={mode === "register" ? 8 : 1}
+              autoComplete={mode === "login" ? "current-password" : "new-password"}
+              className="w-full"
+            />
+            {mode === "register" && (
+              <p className="text-xs text-muted-foreground">At least 8 characters</p>
+            )}
+          </div>
+          <div className="flex flex-col gap-2 pt-2">
+            <Button type="submit" disabled={loading} className="w-full" size="lg">
+              {loading ? "Please wait..." : mode === "login" ? "Sign in" : "Create account"}
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className={cn("w-full text-muted-foreground")}
+              onClick={() => {
+                setMode(mode === "login" ? "register" : "login");
+                setError(null);
+              }}
+            >
+              {mode === "login" ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 });

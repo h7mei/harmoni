@@ -5,6 +5,7 @@
   "description": "Linear-inspired real-time collaboration platform",
   "scripts": {
     "prepare": "husky",
+    "setup": "node scripts/setup.mjs",
     "build": "pnpm -r build",
     "dev": "pnpm -r --parallel run dev",
     "dev:web": "pnpm --filter @harmoni/web dev",
@@ -13,7 +14,8 @@
     "lint": "pnpm -r run lint",
     "test": "pnpm -r run test",
     "db:migrate": "pnpm --filter @harmoni/backend db:migrate",
-    "db:generate": "pnpm --filter @harmoni/backend db:generate"
+    "db:generate": "pnpm --filter @harmoni/backend db:generate",
+    "db:studio": "pnpm --filter @harmoni/backend db:studio"
   },
   "devDependencies": {
     "husky": "^9.1.7",
