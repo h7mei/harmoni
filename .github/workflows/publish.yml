@@ -40,4 +40,5 @@ jobs:
         run: pnpm build
 
       - name: Publish create-harmoni to npm
-        run: pnpm --filter @h7mei/create-harmoni publish --access public --no-git-checks
+        working-directory: packages/create-harmoni
+        run: npm publish --access public
