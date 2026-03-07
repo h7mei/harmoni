@@ -1,6 +1,6 @@
 {
   "name": "create-harmoni",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Scaffold a new Harmoni project without cloning the repo",
   "type": "module",
   "bin": {
