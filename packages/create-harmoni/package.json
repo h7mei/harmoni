@@ -1,5 +1,5 @@
 {
-  "name": "create-harmoni",
+  "name": "@h7mei/create-harmoni",
   "version": "0.1.2",
   "description": "Scaffold a new Harmoni project without cloning the repo",
   "type": "module",

@@ -2,7 +2,7 @@
 
 /**
  * create-harmoni — Scaffold a new Harmoni project without cloning the repo.
- * Usage: pnpm create harmoni my-project  |  npx create-harmoni@latest my-project
+ * Usage: npx @h7mei/create-harmoni my-project
  */
 import { spawn, spawnSync } from "child_process";
 import { existsSync, mkdirSync, rmSync } from "fs";
