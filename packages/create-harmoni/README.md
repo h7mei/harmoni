@@ -6,16 +6,16 @@ Scaffold a new Harmoni project without cloning the repo. Downloads the template 
 
 ```bash
 # With npx (recommended)
-npx @h7mei/create-harmoni my-project
+npx @hanafichoi/create-harmoni my-project
 
 # With pnpm
-pnpm create @h7mei/harmoni my-project
+pnpm create @hanafichoi/harmoni my-project
 
 # With npm
-npm create @h7mei/harmoni@latest my-project
+npm create @hanafichoi/harmoni@latest my-project
 
 # Scaffold in current directory
-npx @h7mei/create-harmoni .
+npx @hanafichoi/create-harmoni .
 ```
 
 ## What it does
@@ -30,7 +30,7 @@ npx @h7mei/create-harmoni .
 Set `HARMONI_TEMPLATE_REPO` to use a different repo or fork:
 
 ```bash
-HARMONI_TEMPLATE_REPO=your-org/harmoni-fork npx @h7mei/create-harmoni my-project
+HARMONI_TEMPLATE_REPO=your-org/harmoni-fork npx @hanafichoi/create-harmoni my-project
 ```
 
 ## Publishing

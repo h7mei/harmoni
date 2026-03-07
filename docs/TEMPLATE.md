@@ -5,7 +5,7 @@ This repo is a **monorepo framework** you can use as the starting point for new 
 ## Quick start from template
 
 1. **Get the code**
-   - **One command (recommended):** `npx @h7mei/create-harmoni my-project` — downloads template, installs deps, runs setup. No clone needed.
+   - **One command (recommended):** `npx @hanafichoi/create-harmoni my-project` — downloads template, installs deps, runs setup. No clone needed.
    - Clone: `git clone <this-repo-url> my-project && cd my-project`
    - Or [Use this template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) on GitHub.
 
