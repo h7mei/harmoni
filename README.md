@@ -24,7 +24,7 @@ harmoni/
 │   └── desktop/    # Electron wrapper (loads web app)
 ├── packages/
 │   ├── shared/     # Types, schemas, logger
-│   └── create-harmoni/  # Scaffold CLI (npx @hanafichoi/create-harmoni)
+│   └── create-harmoni/  # Scaffold CLI (pnpm create harmoni)
 ├── docs/           # TEMPLATE.md, CUSTOMIZATION.md
 ├── scripts/        # setup.mjs (pnpm run setup)
 ├── docker-compose.yml
@@ -62,7 +62,7 @@ This repo can be used as a **template** for new projects (web + desktop monorepo
 **One-command install (no clone):**
 
 ```bash
-npx @hanafichoi/create-harmoni my-project
+pnpm create harmoni my-project
 cd my-project
 docker compose up -d
 psql -U postgres -h localhost -c "CREATE DATABASE harmoni;"

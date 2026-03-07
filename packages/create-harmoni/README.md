@@ -6,16 +6,16 @@ Scaffold a new Harmoni project without cloning the repo. Downloads the template 
 
 ```bash
 # With npx (recommended)
-npx @hanafichoi/create-harmoni my-project
+npx create-harmoni my-project
 
 # With pnpm
-pnpm create @hanafichoi/harmoni my-project
+pnpm create harmoni my-project
 
 # With npm
-npm create @hanafichoi/harmoni@latest my-project
+npm create harmoni@latest my-project
 
 # Scaffold in current directory
-npx @hanafichoi/create-harmoni .
+npx create-harmoni .
 ```
 
 ## What it does
@@ -30,7 +30,7 @@ npx @hanafichoi/create-harmoni .
 Set `HARMONI_TEMPLATE_REPO` to use a different repo or fork:
 
 ```bash
-HARMONI_TEMPLATE_REPO=your-org/harmoni-fork npx @hanafichoi/create-harmoni my-project
+HARMONI_TEMPLATE_REPO=your-org/harmoni-fork npx create-harmoni my-project
 ```
 
 ## Publishing
@@ -45,3 +45,5 @@ git push origin create-harmoni-v0.1.1
 ```
 
 CI will publish to npm automatically. Requires `NPM_TOKEN` secret in the repo.
+
+**404 on publish?** Ensure `NPM_TOKEN` is from the npm account that owns `create-harmoni` (hanafichoi). Create a token at [npmjs.com/settings/~/tokens](https://www.npmjs.com/settings/~/tokens) and add it to GitHub → Settings → Secrets → Actions.
