@@ -23,7 +23,8 @@ harmoni/
 │   ├── web/        # React + MobX + Vite
 │   └── desktop/    # Electron wrapper (loads web app)
 ├── packages/
-│   └── shared/     # Types, schemas, logger
+│   ├── shared/     # Types, schemas, logger
+│   └── create-harmoni/  # Scaffold CLI (pnpm create harmoni)
 ├── docs/           # TEMPLATE.md, CUSTOMIZATION.md
 ├── scripts/        # setup.mjs (pnpm run setup)
 ├── docker-compose.yml
@@ -57,6 +58,17 @@ pnpm dev:desktop   # Electron app (loads web on port 3000)
 ## Use as base project
 
 This repo can be used as a **template** for new projects (web + desktop monorepo with GraphQL, auth, shared packages).
+
+**One-command install (no clone):**
+
+```bash
+pnpm create harmoni my-project
+cd my-project
+docker compose up -d
+psql -U postgres -h localhost -c "CREATE DATABASE harmoni;"
+pnpm db:migrate
+pnpm dev
+```
 
 - **Quick start from template:** [docs/TEMPLATE.md](docs/TEMPLATE.md)
 - **Rebranding / renaming:** [docs/CUSTOMIZATION.md](docs/CUSTOMIZATION.md)
