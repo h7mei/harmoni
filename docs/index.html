@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harmoni — Scaffold Template Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Harmoni</h1>
+    <p>Linear-inspired real-time collaboration platform. Web + desktop from one codebase.</p>
+  </header>
+
+  <main>
+    <section id="quick-start">
+      <h2>Quick Start</h2>
+      <p>One command to scaffold a new project (no clone needed):</p>
+      <pre><code>pnpm create harmoni my-project
+cd my-project
+docker compose up -d
+psql -U postgres -h localhost -c "CREATE DATABASE harmoni;"
+pnpm db:migrate
+pnpm dev</code></pre>
+      <p>Web at <code>http://localhost:3000</code>, API at <code>http://localhost:4000/graphql</code>.</p>
+    </section>
+
+    <section id="tech-stack">
+      <h2>Tech Stack</h2>
+      <table>
+        <tr><th>Layer</th><th>Stack</th></tr>
+        <tr><td>Web</td><td>React, Vite, MobX, Apollo Client, Tailwind, shadcn-style UI</td></tr>
+        <tr><td>Desktop</td><td>Electron (loads web app)</td></tr>
+        <tr><td>API</td><td>Express, Apollo Server (GraphQL), WebSocket</td></tr>
+        <tr><td>Data</td><td>PostgreSQL (Drizzle ORM), Redis (optional)</td></tr>
+        <tr><td>Shared</td><td>Zod schemas, pino logger, TypeScript types</td></tr>
+      </table>
+    </section>
+
+    <section id="structure">
+      <h2>Project Structure</h2>
+      <pre>harmoni/
+├── apps/
+│   ├── backend/    # GraphQL API, WebSocket, Drizzle
+│   ├── web/        # React + MobX + Vite
+│   └── desktop/    # Electron wrapper
+├── packages/
+│   ├── shared/     # Types, schemas, logger
+│   └── create-harmoni/  # Scaffold CLI
+├── docs/
+├── scripts/
+└── docker-compose.yml</pre>
+    </section>
+
+    <section id="clone">
+      <h2>Clone or Template</h2>
+      <p>Other ways to get the code:</p>
+      <ul>
+        <li><strong>Clone:</strong> <code>git clone https://github.com/h7mei/harmoni.git my-project</code></li>
+        <li><strong>GitHub template:</strong> Use “Use this template” on the repo</li>
+      </ul>
+      <p>Then run <code>pnpm install</code> and <code>pnpm run setup</code>.</p>
+    </section>
+
+    <section id="customization">
+      <h2>Customization</h2>
+      <p>Rebranding for a different product? Update:</p>
+      <ul>
+        <li>Package names (<code>@harmoni/*</code> → <code>@your-scope/*</code>)</li>
+        <li>Database name in <code>.env</code> and <code>docker-compose.yml</code></li>
+        <li>Desktop <code>appId</code> and <code>productName</code> in electron-builder.json</li>
+        <li>Storage key prefixes in web app</li>
+      </ul>
+      <p>See <a href="https://github.com/h7mei/harmoni/blob/main/docs/CUSTOMIZATION.md">CUSTOMIZATION.md</a> for the full checklist.</p>
+    </section>
+
+    <section id="commands">
+      <h2>Commands</h2>
+      <table>
+        <tr><td><code>pnpm dev</code></td><td>Start web, backend, desktop</td></tr>
+        <tr><td><code>pnpm dev:web</code></td><td>Web only (port 3000)</td></tr>
+        <tr><td><code>pnpm dev:backend</code></td><td>API only (port 4000)</td></tr>
+        <tr><td><code>pnpm dev:desktop</code></td><td>Electron app</td></tr>
+        <tr><td><code>pnpm build</code></td><td>Build all apps</td></tr>
+        <tr><td><code>pnpm db:migrate</code></td><td>Run migrations</td></tr>
+        <tr><td><code>pnpm db:generate</code></td><td>Generate migrations</td></tr>
+      </table>
+    </section>
+
+    <footer>
+      <p><a href="https://github.com/h7mei/harmoni">GitHub</a> · <code>pnpm create harmoni my-project</code></p>
+    </footer>
+  </main>
+</body>
+</html>

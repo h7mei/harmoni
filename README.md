@@ -2,7 +2,7 @@
 
 Linear-inspired real-time collaboration platform. Single codebase for web and desktop, with live sync across clients.
 
-**This repo is also a base project / template** for new apps. See [Use as base project](#use-as-base-project) and [docs/TEMPLATE.md](docs/TEMPLATE.md).
+**This repo is also a base project / template** for new apps. See [Use as base project](#use-as-base-project) and [docs](https://h7mei.github.io/harmoni/) / [docs/TEMPLATE.md](docs/TEMPLATE.md).
 
 ## Tech Stack
 

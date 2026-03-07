@@ -35,8 +35,13 @@ HARMONI_TEMPLATE_REPO=your-org/harmoni-fork pnpm create harmoni my-project
 
 ## Publishing
 
-From the monorepo root:
+1. Bump version in `packages/create-harmoni/package.json`
+2. Commit and push
+3. Create and push a tag (must match the version):
 
 ```bash
-pnpm --filter create-harmoni publish --access public
+git tag create-harmoni-v0.1.1
+git push origin create-harmoni-v0.1.1
 ```
+
+CI will publish to npm automatically. Requires `NPM_TOKEN` secret in the repo.

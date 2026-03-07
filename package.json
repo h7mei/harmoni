@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "description": "Linear-inspired real-time collaboration platform",
+  "pnpm": {
+    "overrides": {
+      "rimraf": "5.0.5",
+      "glob": "10.5.0"
+    }
+  },
   "scripts": {
     "prepare": "husky",
     "setup": "node scripts/setup.mjs",
