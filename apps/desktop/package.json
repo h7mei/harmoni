@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc && node node_modules/vite/bin/vite.js build",
-    "dev": "node node_modules/concurrently/dist/bin/concurrently.js \"pnpm --filter @harmoni/web dev\" \"node node_modules/wait-on/bin/wait-on http://localhost:3000 && npx cross-env NODE_ENV=development electron . --no-sandbox\"",
+    "dev": "node node_modules/concurrently/dist/bin/concurrently.js \"pnpm --filter @harmoni/web dev\" \"node node_modules/wait-on/bin/wait-on http://localhost:3000 && tsc && npx cross-env NODE_ENV=development electron . --no-sandbox\"",
     "start": "electron . --no-sandbox",
     "pack": "pnpm build && npx electron-builder --dir",
     "pack:mac": "pnpm build && npx electron-builder --mac",
