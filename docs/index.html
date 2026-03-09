@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Harmoni — Scaffold Template Docs</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <header>
     <h1>Harmoni</h1>
@@ -16,24 +18,70 @@
     <section id="quick-start">
       <h2>Quick Start</h2>
       <p>One command to scaffold a new project (no clone needed):</p>
-      <pre><code>pnpm create harmoni my-project
+      <div class="project-name-row">
+        <label for="project-name">Project name:</label>
+        <input type="text" id="project-name" value="my-project" placeholder="my-project" spellcheck="false">
+        <button type="button" id="copy-btn" title="Copy commands">Copy</button>
+      </div>
+      <pre><code id="scaffold-commands">pnpm create harmoni my-project
 cd my-project
-docker compose up -d
 psql -U postgres -h localhost -c "CREATE DATABASE harmoni;"
 pnpm db:migrate
 pnpm dev</code></pre>
       <p>Web at <code>http://localhost:3000</code>, API at <code>http://localhost:4000/graphql</code>.</p>
+      <script>
+        (function () {
+          var input = document.getElementById('project-name');
+          var code = document.getElementById('scaffold-commands');
+          var btn = document.getElementById('copy-btn');
+          function update() {
+            var name = input.value.trim() || 'my-project';
+            var dbName = /^[a-z_][a-z0-9_]*$/i.test(name) ? name : '\\"' + name.replace(/"/g, '""') + '\\"';
+            code.textContent = 'pnpm create harmoni ' + name + '\ncd ' + name + '\npsql -U postgres -h localhost -c "CREATE DATABASE ' + dbName + ';"\npnpm db:migrate\npnpm dev';
+          }
+          function copy() {
+            var name = input.value.trim() || 'my-project';
+            var dbName = /^[a-z_][a-z0-9_]*$/i.test(name) ? name : '\\"' + name.replace(/"/g, '""') + '\\"';
+            var text = 'pnpm create harmoni ' + name + '\ncd ' + name + '\npsql -U postgres -h localhost -c "CREATE DATABASE ' + dbName + ';"\npnpm db:migrate\npnpm dev';
+            navigator.clipboard.writeText(text).then(function () {
+              btn.textContent = 'Copied!';
+              setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+            });
+          }
+          input.addEventListener('input', update);
+          input.addEventListener('change', update);
+          btn.addEventListener('click', copy);
+        })();
+      </script>
     </section>
 
     <section id="tech-stack">
       <h2>Tech Stack</h2>
       <table>
-        <tr><th>Layer</th><th>Stack</th></tr>
-        <tr><td>Web</td><td>React, Vite, MobX, Apollo Client, Tailwind, shadcn-style UI</td></tr>
-        <tr><td>Desktop</td><td>Electron (loads web app)</td></tr>
-        <tr><td>API</td><td>Express, Apollo Server (GraphQL), WebSocket</td></tr>
-        <tr><td>Data</td><td>PostgreSQL (Drizzle ORM), Redis (optional)</td></tr>
-        <tr><td>Shared</td><td>Zod schemas, pino logger, TypeScript types</td></tr>
+        <tr>
+          <th>Layer</th>
+          <th>Stack</th>
+        </tr>
+        <tr>
+          <td>Web</td>
+          <td>React, Vite, MobX, Apollo Client, Tailwind, shadcn-style UI</td>
+        </tr>
+        <tr>
+          <td>Desktop</td>
+          <td>Electron (loads web app)</td>
+        </tr>
+        <tr>
+          <td>API</td>
+          <td>Express, Apollo Server (GraphQL), WebSocket</td>
+        </tr>
+        <tr>
+          <td>Data</td>
+          <td>PostgreSQL (Drizzle ORM), Redis (optional)</td>
+        </tr>
+        <tr>
+          <td>Shared</td>
+          <td>Zod schemas, pino logger, TypeScript types</td>
+        </tr>
       </table>
     </section>
 
@@ -71,19 +119,41 @@ pnpm dev</code></pre>
         <li>Desktop <code>appId</code> and <code>productName</code> in electron-builder.json</li>
         <li>Storage key prefixes in web app</li>
       </ul>
-      <p>See <a href="https://github.com/h7mei/harmoni/blob/main/docs/CUSTOMIZATION.md">CUSTOMIZATION.md</a> for the full checklist.</p>
+      <p>See <a href="https://github.com/h7mei/harmoni/blob/main/docs/CUSTOMIZATION.md">CUSTOMIZATION.md</a> for the
+        full checklist.</p>
     </section>
 
     <section id="commands">
       <h2>Commands</h2>
       <table>
-        <tr><td><code>pnpm dev</code></td><td>Start web, backend, desktop</td></tr>
-        <tr><td><code>pnpm dev:web</code></td><td>Web only (port 3000)</td></tr>
-        <tr><td><code>pnpm dev:backend</code></td><td>API only (port 4000)</td></tr>
-        <tr><td><code>pnpm dev:desktop</code></td><td>Electron app</td></tr>
-        <tr><td><code>pnpm build</code></td><td>Build all apps</td></tr>
-        <tr><td><code>pnpm db:migrate</code></td><td>Run migrations</td></tr>
-        <tr><td><code>pnpm db:generate</code></td><td>Generate migrations</td></tr>
+        <tr>
+          <td><code>pnpm dev</code></td>
+          <td>Start web, backend, desktop</td>
+        </tr>
+        <tr>
+          <td><code>pnpm dev:web</code></td>
+          <td>Web only (port 3000)</td>
+        </tr>
+        <tr>
+          <td><code>pnpm dev:backend</code></td>
+          <td>API only (port 4000)</td>
+        </tr>
+        <tr>
+          <td><code>pnpm dev:desktop</code></td>
+          <td>Electron app</td>
+        </tr>
+        <tr>
+          <td><code>pnpm build</code></td>
+          <td>Build all apps</td>
+        </tr>
+        <tr>
+          <td><code>pnpm db:migrate</code></td>
+          <td>Run migrations</td>
+        </tr>
+        <tr>
+          <td><code>pnpm db:generate</code></td>
+          <td>Generate migrations</td>
+        </tr>
       </table>
     </section>
 
@@ -92,4 +162,5 @@ pnpm dev</code></pre>
     </footer>
   </main>
 </body>
+
 </html>
